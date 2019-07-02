@@ -8,12 +8,22 @@ export default {
   },
   data () {
     return {
-      filename: ''
+      filename: '',
+      isUploaded: false,
+      transaction: {
+        filename: 'example',
+        txHash: 'example',
+        ipfsHash: 'example',
+        contract: 'example'
+      }
     }
   },
   methods: {
     onChangeFile (event) {
       this.filename = event.target.value
+    },
+    onSubmit () {
+      this.isUploaded = true
     }
   }
 }
@@ -46,7 +56,46 @@ export default {
           type="submit"
           class="form__submit"
           value="UPLOAD"
+          @click="onSubmit"
         >
+        <button v-if="isUploaded" class="form__reload">RELOAD</button>
+      </div>
+      <div
+        v-if="isUploaded"
+        class="table"
+      >
+        <div class="table__field">
+          <div class="table__label">
+            Filename
+          </div>
+          <div class="table__value">
+            {{ transaction.filename }}
+          </div>
+        </div>
+        <div class="table__field">
+          <div class="table__label">
+            IPFS Hash
+          </div>
+          <div class="table__value">
+            {{ transaction.ipfsHash }}
+          </div>
+        </div>
+        <div class="table__field">
+          <div class="table__label">
+            ETC Contract Address
+          </div>
+          <div class="table__value">
+            {{ transaction.contract }}
+          </div>
+        </div>
+        <div class="table__field">
+          <div class="table__label">
+            Transaction Hash
+          </div>
+          <div class="table__value">
+            {{ transaction.txHash }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -143,8 +192,57 @@ export default {
     background-position: center;
   }
 
-  &__submit:focus {
+  &__reload {
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.5rem;
+    padding: 0.8rem;
+    border: none;
+    color: white;
+    font-weight: 800;
+    font-family: 'Montserrat', sans-serif;
+    background-color: black;
+    text-align: center;
+    background-position: center;
+  }
+
+  &__submit:focus,
+  &__reload:focus {
     outline: 0;
+  }
+}
+
+.table {
+  display: table;
+  width: 100%;
+  margin-top: 1rem;
+
+  &__field {
+    display: table-row;
+  }
+
+  &__label,
+  &__value {
+    display: table-cell;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+  }
+
+  &__field:not(:last-child) .table__label,
+  &__field:not(:last-child) .table__value {
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  &__label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #343a40;
+  }
+
+  &__value {
+    text-align: right;
+    font-size: 1.1rem;
+    color: #495057;
   }
 }
 </style>
